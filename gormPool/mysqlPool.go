@@ -101,12 +101,12 @@ func NewMySqlPool(dbSetting *DbSetting) *MySqlPool {
 
 // GetMain 获取主数据库链接
 func (receiver *MySqlPool) GetConn() *gorm.DB {
-	receiver.GetRws()
+	receiver.getRws()
 	return receiver.mainConn
 }
 
-// GetRws 获取带有读写分离的数据库链接
-func (receiver *MySqlPool) GetRws() *gorm.DB {
+// getRws 获取带有读写分离的数据库链接
+func (receiver *MySqlPool) getRws() *gorm.DB {
 	var (
 		err                                 error
 		sourceDialectors, replicaDialectors []gorm.Dialector
