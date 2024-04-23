@@ -1,6 +1,8 @@
 # github.com/go-sql-driver/mysql v1.7.0
 ## explicit; go 1.13
 github.com/go-sql-driver/mysql
+# github.com/jericho-yu/filesystem v0.0.1
+## explicit; go 1.21.8
 # github.com/jinzhu/inflection v1.0.0
 ## explicit
 github.com/jinzhu/inflection

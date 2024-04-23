@@ -33,11 +33,6 @@ var (
 	mysqlPoolOnce sync.Once
 )
 
-// GetMain 获取主数据库链接
-func (receiver *MySqlPool) GetMain() *gorm.DB {
-	return receiver.mainConn
-}
-
 // NewMySqlPool 创建mysql链接池对象
 func NewMySqlPool(
 	Username,
@@ -113,6 +108,11 @@ func NewMySqlPool(
 	sqlDb.SetMaxOpenConns(MaxOpenConns)
 
 	return mysqlPoolIns
+}
+
+// GetMain 获取主数据库链接
+func (receiver *MySqlPool) GetMain() *gorm.DB {
+	return receiver.mainConn
 }
 
 // GetRws 获取带有读写分离的数据库链接

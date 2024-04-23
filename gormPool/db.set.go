@@ -51,7 +51,7 @@ func NewDbSetting(path string) *DbSetting {
 		err       error
 		dbSetting *DbSetting
 	)
-	file, err = os.ReadFile(path + "/db.yaml")
+	file, err = os.ReadFile(path)
 	if err != nil {
 		panic(fmt.Sprintf("读取配置文件（db.yaml）失败：%s", err.Error()))
 	}
