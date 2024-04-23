@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	dbSetting := NewDbSetting("./settings")
+	dbSetting := gormPool.NewDbSetting("./settings")
 
 	//  创建mysql连接池
 	mysqlPool := gormPool.NewMySqlPool(
