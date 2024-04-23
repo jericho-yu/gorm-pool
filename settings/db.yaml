@@ -1,0 +1,59 @@
+common:
+  driver: "mysql"
+
+mysql:
+  maxOpenConns: 100
+  maxIdleConns: 20
+  maxLifetime: 100
+  maxIdleTime: 10
+  rws: true
+  main:
+    username: "root"
+    password: "root"
+    host: 127.0.0.1
+    port: 3308
+    database: "abc_passport"
+    charset: "utf8mb4"
+    collation: "utf8mb4_general_ci"
+  sources:
+    conn1:
+      username: "root"
+      password: "root"
+      host: 127.0.0.1
+      port: 3308
+      database: "abc_passport"
+      charset: "utf8mb4"
+      collation: "utf8mb4_general_ci"
+    conn2:
+      username: "root"
+      password: "root"
+      host: 127.0.0.1
+      port: 3308
+      database: "abc_passport"
+      charset: "utf8mb4"
+      collation: "utf8mb4_general_ci"
+  replicas:
+    conn3:
+      username: "root"
+      password: "root"
+      host: 127.0.0.1
+      port: 3308
+      database: "abc_passport"
+      charset: "utf8mb4"
+      collation: "utf8mb4_general_ci"
+    conn4:
+      username: "root"
+      password: "root"
+      host: 127.0.0.1
+      port: 3308
+      database: "abc_passport"
+      charset: "utf8mb4"
+      collation: "utf8mb4_general_ci"
+    conn5:
+      username: "root"
+      password: "root"
+      host: 127.0.0.1
+      port: 3308
+      database: "abc_passport"
+      charset: "utf8mb4"
+      collation: "utf8mb4_general_ci"
