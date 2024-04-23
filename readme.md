@@ -1,25 +1,28 @@
 ```go
-dbSetting := gormPool.NewDbSetting("./settings")
+package main
 
-//  创建mysql连接池
-mysqlPool := gormPool.NewMySqlPool(dbSetting)
+import (
+	"fmt"
 
-// 创建单数据库链接
-mysqlSingle := mysqlPool.GetMain()
-fmt.Println(mysqlSingle)
-
-// 创建读写分离数据库
-mysqlRws := mysqlPool.GetRws(
-    dbSetting.MySql.Sources,
-    dbSetting.MySql.Replicas,
+	"github.com/jericho-yu/gorm-pool/gormPool"
 )
-fmt.Println(mysqlRws)
 
-// 关闭数据库链接
-defer func() {
-    e := mysqlPool.Close()
-    if e != nil {
-        panic(e)
-    }
-}()
+func main() {
+	dbSetting := gormPool.NewDbSetting("./settings")
+
+	//  创建mysql连接池
+	mysqlPool := gormPool.NewMySqlPool(dbSetting)
+
+	// 获取数据库链接
+	mysqlSingle := mysqlPool.GetConn()
+	fmt.Println(mysqlSingle)
+
+	// 关闭数据库链接
+	defer func() {
+		e := mysqlPool.Close()
+		if e != nil {
+			panic(e)
+		}
+	}()
+}
 ```

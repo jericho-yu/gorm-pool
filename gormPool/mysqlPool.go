@@ -43,8 +43,8 @@ func NewMySqlPool(dbSetting *DbSetting) *MySqlPool {
 			port:         dbSetting.MySql.Main.Port,
 			database:     dbSetting.MySql.Main.Database,
 			charset:      dbSetting.MySql.Main.Charset,
-			sources:      make(map[string]*MySqlConnection),
-			replicas:     make(map[string]*MySqlConnection),
+			sources:      dbSetting.MySql.Sources,
+			replicas:     dbSetting.MySql.Replicas,
 			rws:          false,
 			maxIdleTime:  dbSetting.MySql.MaxIdleTime,
 			maxLifetime:  dbSetting.MySql.MaxLifetime,
@@ -100,12 +100,13 @@ func NewMySqlPool(dbSetting *DbSetting) *MySqlPool {
 }
 
 // GetMain 获取主数据库链接
-func (receiver *MySqlPool) GetMain() *gorm.DB {
+func (receiver *MySqlPool) GetConn() *gorm.DB {
+	receiver.GetRws()
 	return receiver.mainConn
 }
 
 // GetRws 获取带有读写分离的数据库链接
-func (receiver *MySqlPool) GetRws(Sources map[string]*MySqlConnection, Replicas map[string]*MySqlConnection) *gorm.DB {
+func (receiver *MySqlPool) GetRws() *gorm.DB {
 	var (
 		err                                 error
 		sourceDialectors, replicaDialectors []gorm.Dialector
@@ -113,9 +114,9 @@ func (receiver *MySqlPool) GetRws(Sources map[string]*MySqlConnection, Replicas 
 		replicas                            []*Dsn
 	)
 	// 配置写库
-	if len(Sources) > 0 {
+	if len(receiver.sources) > 0 {
 		sources = make([]*Dsn, 0)
-		for idx, item := range Sources {
+		for idx, item := range receiver.sources {
 			sources = append(sources, &Dsn{
 				Name: idx,
 				Content: fmt.Sprintf(
@@ -132,9 +133,9 @@ func (receiver *MySqlPool) GetRws(Sources map[string]*MySqlConnection, Replicas 
 	}
 
 	// 配置读库
-	if len(Replicas) > 0 {
+	if len(receiver.replicas) > 0 {
 		replicas = make([]*Dsn, 0)
-		for idx, item := range Replicas {
+		for idx, item := range receiver.replicas {
 			replicas = append(replicas, &Dsn{
 				Name: idx,
 				Content: fmt.Sprintf(
