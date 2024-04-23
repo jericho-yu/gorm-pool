@@ -10,18 +10,7 @@ func main() {
 	dbSetting := gormPool.NewDbSetting("./settings")
 
 	//  创建mysql连接池
-	mysqlPool := gormPool.NewMySqlPool(
-		dbSetting.MySql.Main.Username,
-		dbSetting.MySql.Main.Password,
-		dbSetting.MySql.Main.Host,
-		dbSetting.MySql.Main.Port,
-		dbSetting.MySql.Main.Database,
-		dbSetting.MySql.Main.Charset,
-		dbSetting.MySql.MaxIdleTime,
-		dbSetting.MySql.MaxLifetime,
-		dbSetting.MySql.MaxIdleConns,
-		dbSetting.MySql.MaxOpenConns,
-	)
+	mysqlPool := gormPool.NewMySqlPool(dbSetting)
 
 	// 创建单数据库链接
 	mysqlSingle := mysqlPool.GetMain()

@@ -34,33 +34,22 @@ var (
 )
 
 // NewMySqlPool 创建mysql链接池对象
-func NewMySqlPool(
-	Username,
-	Password,
-	Host string,
-	Port uint16,
-	Database,
-	Charset string,
-	MaxIdleTime,
-	MaxLifetime,
-	MaxIdleConns,
-	MaxOpenConns int,
-) *MySqlPool {
+func NewMySqlPool(dbSetting *DbSetting) *MySqlPool {
 	mysqlPoolOnce.Do(func() {
 		mysqlPoolIns = &MySqlPool{
-			username:     Username,
-			password:     Password,
-			host:         Host,
-			port:         Port,
-			database:     Database,
-			charset:      Charset,
+			username:     dbSetting.MySql.Main.Username,
+			password:     dbSetting.MySql.Main.Password,
+			host:         dbSetting.MySql.Main.Host,
+			port:         dbSetting.MySql.Main.Port,
+			database:     dbSetting.MySql.Main.Database,
+			charset:      dbSetting.MySql.Main.Charset,
 			sources:      make(map[string]*MySqlConnection),
 			replicas:     make(map[string]*MySqlConnection),
 			rws:          false,
-			maxIdleTime:  MaxIdleTime,
-			maxLifetime:  MaxLifetime,
-			maxIdleConns: MaxIdleConns,
-			maxOpenConns: MaxOpenConns,
+			maxIdleTime:  dbSetting.MySql.MaxIdleTime,
+			maxLifetime:  dbSetting.MySql.MaxLifetime,
+			maxIdleConns: dbSetting.MySql.MaxIdleConns,
+			maxOpenConns: dbSetting.MySql.MaxOpenConns,
 		}
 	})
 
@@ -74,12 +63,12 @@ func NewMySqlPool(
 		Name: "main",
 		Content: fmt.Sprintf(
 			"%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
-			Username,
-			Password,
-			Host,
-			Port,
-			Database,
-			Charset,
+			dbSetting.MySql.Main.Username,
+			dbSetting.MySql.Main.Password,
+			dbSetting.MySql.Main.Host,
+			dbSetting.MySql.Main.Port,
+			dbSetting.MySql.Main.Database,
+			dbSetting.MySql.Main.Charset,
 		),
 	}
 
@@ -102,10 +91,10 @@ func NewMySqlPool(
 	mysqlPoolIns.mainConn = mysqlPoolIns.mainConn.Session(&gorm.Session{})
 
 	sqlDb, _ := mysqlPoolIns.mainConn.DB()
-	sqlDb.SetConnMaxIdleTime(time.Duration(MaxIdleTime) * time.Hour)
-	sqlDb.SetConnMaxLifetime(time.Duration(MaxLifetime) * time.Hour)
-	sqlDb.SetMaxIdleConns(MaxIdleConns)
-	sqlDb.SetMaxOpenConns(MaxOpenConns)
+	sqlDb.SetConnMaxIdleTime(time.Duration(mysqlPoolIns.maxIdleTime) * time.Hour)
+	sqlDb.SetConnMaxLifetime(time.Duration(mysqlPoolIns.maxLifetime) * time.Hour)
+	sqlDb.SetMaxIdleConns(mysqlPoolIns.maxIdleConns)
+	sqlDb.SetMaxOpenConns(mysqlPoolIns.maxOpenConns)
 
 	return mysqlPoolIns
 }
