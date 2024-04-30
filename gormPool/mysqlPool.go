@@ -29,8 +29,9 @@ type MySqlPool struct {
 }
 
 var (
-	mysqlPoolIns  *MySqlPool
-	mysqlPoolOnce sync.Once
+	mysqlPoolIns   *MySqlPool
+	mysqlPoolOnce  sync.Once
+	MySqlDsnFormat = "%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local"
 )
 
 // NewMySqlPool 创建mysql链接池对象
@@ -62,7 +63,7 @@ func NewMySqlPool(dbSetting *DbSetting) *MySqlPool {
 	mysqlPoolIns.mainDsn = &Dsn{
 		Name: "main",
 		Content: fmt.Sprintf(
-			"%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
+			MySqlDsnFormat,
 			dbSetting.MySql.Main.Username,
 			dbSetting.MySql.Main.Password,
 			dbSetting.MySql.Main.Host,
@@ -120,7 +121,7 @@ func (receiver *MySqlPool) getRws() *gorm.DB {
 			sources = append(sources, &Dsn{
 				Name: idx,
 				Content: fmt.Sprintf(
-					"%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
+					MySqlDsnFormat,
 					item.Username,
 					item.Password,
 					item.Host,
@@ -139,7 +140,7 @@ func (receiver *MySqlPool) getRws() *gorm.DB {
 			replicas = append(replicas, &Dsn{
 				Name: idx,
 				Content: fmt.Sprintf(
-					"%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
+					MySqlDsnFormat,
 					item.Username,
 					item.Password,
 					item.Host,
