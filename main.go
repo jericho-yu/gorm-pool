@@ -9,14 +9,14 @@ import (
 func main() {
 	var e error
 	//  创建mysql连接池
-	mysqlPool := gormPool.NewMySqlPool(gormPool.NewDbSetting("./settings/db.yaml"))
+	mysqlPool := gormPool.MySqlPoolApp.New(gormPool.NewDbSetting("./settings/db.yaml"))
 
 	// 获取mysql链接
 	mysqlConn := mysqlPool.GetConn()
 	fmt.Println("mysqlConn:", mysqlConn)
 
 	// 创建postgres链接
-	postgresPool := gormPool.NewPostgresPool(gormPool.NewDbSetting("./settings/db.yaml"))
+	postgresPool := gormPool.PostgresPoolApp.New(gormPool.NewDbSetting("./settings/db.yaml"))
 
 	// 获取postgres链接
 	postgresConn := postgresPool.GetConn()

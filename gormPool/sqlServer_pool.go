@@ -27,10 +27,11 @@ var (
 	sqlServerPoolIns   *SqlServerPool
 	sqlServerPoolOnce  sync.Once
 	SqlServerDsnFormat = "sqlserver://%s:%s@%s:?%d?database=%s"
+	SqlServerPoolApp   SqlServerPool
 )
 
-// NewSqlServerPool 创建mysql链接池对象
-func NewSqlServerPool(dbSetting *DbSetting) *SqlServerPool {
+// New 实例化：sql server连接池
+func (SqlServerPool) New(dbSetting *DbSetting) *SqlServerPool {
 	sqlServerPoolOnce.Do(func() {
 		sqlServerPoolIns = &SqlServerPool{
 			username:     dbSetting.Postgres.Main.Username,

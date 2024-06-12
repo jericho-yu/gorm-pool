@@ -27,10 +27,11 @@ var (
 	postgresPoolIns   *PostgresPool
 	postgresPoolOnce  sync.Once
 	PostgresDsnFormat = "host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s"
+	PostgresPoolApp   PostgresPool
 )
 
-// NewPostgresPool 创建mysql链接池对象
-func NewPostgresPool(dbSetting *DbSetting) *PostgresPool {
+// New 实例化：postgres链接池
+func (PostgresPool) New(dbSetting *DbSetting) *PostgresPool {
 	postgresPoolOnce.Do(func() {
 		postgresPoolIns = &PostgresPool{
 			username:     dbSetting.Postgres.Main.Username,

@@ -32,10 +32,11 @@ var (
 	mysqlPoolIns   *MySqlPool
 	mysqlPoolOnce  sync.Once
 	MySqlDsnFormat = "%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local"
+	MySqlPoolApp   MySqlPool
 )
 
-// NewMySqlPool 创建mysql链接池对象
-func NewMySqlPool(dbSetting *DbSetting) *MySqlPool {
+// New 实例化：mysql链接池
+func (MySqlPool) New(dbSetting *DbSetting) *MySqlPool {
 	mysqlPoolOnce.Do(func() {
 		mysqlPoolIns = &MySqlPool{
 			username:     dbSetting.MySql.Main.Username,

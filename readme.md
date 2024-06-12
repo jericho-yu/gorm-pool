@@ -96,7 +96,7 @@ func main() {
 	fmt.Println("mysqlConn:", mysqlConn)
 
 	// 创建postgres链接池
-	postgresPool := gormPool.NewPostgresPool(gormPool.NewDbSetting("./settings/db.yaml"))
+	postgresPool := gormPool.PostgresPoolApp.New(gormPool.NewDbSetting("./settings/db.yaml"))
 
 	// 获取postgres链接
 	postgresConn := postgresPool.GetConn()
